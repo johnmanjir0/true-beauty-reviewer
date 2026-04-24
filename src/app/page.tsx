@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, ShieldAlert, AlertTriangle, ShieldCheck, ThumbsUp, ThumbsDown, Sparkles, DollarSign, ShoppingCart, Droplets, Wind, Star, Info } from "lucide-react";
+import { Search, ShieldAlert, AlertTriangle, ShieldCheck, ThumbsUp, ThumbsDown, Activity, Sparkles, DollarSign, HeartPulse, ShoppingCart, Info } from "lucide-react";
 
 interface ScoreDetail {
   value: number;
@@ -46,7 +46,7 @@ export default function Home() {
     if (result) {
       document.title = `「${result.productName}」の解析結果｜True Beauty Reviewer`;
     } else {
-      document.title = "🔍 美容品ステマ判定｜True Beauty Reviewer（AI本音解析）";
+      document.title = "🔍 ステマ判定｜True Beauty Reviewer（AI口コミ解析）";
     }
   }, [result]);
 
@@ -95,16 +95,16 @@ export default function Home() {
   };
 
   const RiskIcon = ({ level }: { level: string }) => {
-    if (level === "安全") return <ShieldCheck size={32} strokeWidth={1.5} />;
-    if (level === "危険") return <ShieldAlert size={32} strokeWidth={1.5} />;
-    return <AlertTriangle size={32} strokeWidth={1.5} />;
+    if (level === "安全") return <ShieldCheck size={28} />;
+    if (level === "危険") return <ShieldAlert size={28} />;
+    return <AlertTriangle size={28} />;
   };
 
   const ScoreCard = ({ label, detail, type, icon: Icon }: { label: string, detail: ScoreDetail, type: 'positive' | 'negative', icon: any }) => (
     <div className={`score-card-rich score-${type}`}>
       <div className="score-top">
         <div className="score-label">
-          <Icon size={20} strokeWidth={1.5} />
+          <Icon size={20} />
           <span>{label}</span>
         </div>
         <div className="score-num">
@@ -120,23 +120,28 @@ export default function Home() {
 
   return (
     <main className="container">
-      <div className="glass-panel">
+      <div className="glass-panel" style={{ marginTop: "2rem" }}>
         <h1 className="title">True Beauty Reviewer</h1>
-        <p className="subtitle">AIによる美容品の本音・ステマ解析</p>
+        <p className="subtitle" style={{ marginBottom: "1rem" }}>AIによる美容商品のステマ・口コミ判定</p>
 
-        <div style={{ background: "rgba(200,138,138,0.05)", border: "1px solid rgba(200,138,138,0.15)", borderRadius: "24px", padding: "2rem", marginBottom: "3rem", lineHeight: "1.8", color: "#6e5d5d", fontSize: "0.95rem" }}>
-          <p style={{ marginBottom: "1rem" }}>
-            「SNSでバズってるけど、私の肌に合う？」「PR広告ばかりで本当の評判がわからない…」<br />
-            そんな悩みを解決するために、<strong>AIがWEB上の膨大なリアル口コミを精査し、その“真実”を可視化</strong>します。
+        <div style={{ background: "rgba(14,165,233,0.06)", border: "1px solid rgba(14,165,233,0.2)", borderRadius: "16px", padding: "1.5rem", marginBottom: "1.5rem", lineHeight: "1.8", color: "#334155", fontSize: "0.95rem" }}>
+          <p style={{ marginBottom: "0.8rem" }}>
+            「この導入液、本当にいいの？」「PRばかりで逆に怪しい…」
+            そんな疑問をお持ちの方のために作られた、<strong>AIが口コミをリアルタイム解析して本音を暴くツール</strong>です。
           </p>
-          <p>
-            「ステマの疑い」「実際の仕上がり」「肌への刺激・成分」「コスパ」など、広告からは読み取れない情報を多角的に分析。憧れの美容品を手にする前に、一度AIの眼でチェックしてみてください。
+          <p style={{ marginBottom: "0.8rem" }}>
+            商品名を入力するだけで、WEB上の口コミ・レビューをAIが自動収集し、
+            <strong>「ステマ危険度」「効果の信頼性」「仕上がり」「肌への優しさ」「定期縛りの有無」</strong>など
+            多角的な視点で徹底分析します。高額な美容品の購入前に、ぜひ一度ご活用ください。
+          </p>
+          <p style={{ fontSize: "0.85rem", color: "#64748b" }}>
+            ※ステマ（ステルスマーケティング）とは：企業から報酬をもらいながら、一般客を装って商品を絶賛する「サクラ口コミ」のことです。
           </p>
         </div>
 
         <form className="search-form" onSubmit={handleSearch}>
           <div style={{ position: "relative", flex: 1 }}>
-            <Search className="search-icon" size={22} strokeWidth={1.5} />
+            <Search className="search-icon" size={20} />
             <input
               type="text"
               value={query}
@@ -146,17 +151,17 @@ export default function Home() {
             />
           </div>
           <button type="submit" disabled={loading} className="search-button">
-            {loading ? "分析中..." : "真実を解析"}
+            {loading ? "解析中..." : "解析する"}
           </button>
         </form>
 
-        {/* カテゴリー別：人気検索ワード */}
-        <div style={{ marginBottom: "4rem" }}>
-          <p style={{ fontSize: "0.9rem", fontWeight: "600", color: "#8c7e7e", marginBottom: "1.2rem", display: "flex", alignItems: "center", gap: "0.6rem" }}>
-            <Star size={18} color="var(--primary)" fill="var(--primary)" /> カテゴリー別トレンド
+        {/* カテゴリー別：最近解析された商品 */}
+        <div style={{ marginBottom: "2.5rem" }}>
+          <p style={{ fontSize: "0.9rem", fontWeight: "bold", color: "#475569", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <Activity size={18} color="var(--primary)" /> カテゴリー別：最近解析された商品
           </p>
           
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
             {[
               { label: "🧴 スキンケア・先行美容液", items: ["リポスフェリック", "SK-II フェイシャル", "導入美容液 潤い", "ビタミンC導入体", "敏感肌用 化粧水"] },
               { label: "💄 ベース・ポイントメイク", items: ["崩れないファンデ", "リキッドファンデ", "ティントリップ", "アイブロウ落ちない", "美容液マスカラ"] },
@@ -164,8 +169,8 @@ export default function Home() {
               { label: "🥗 美容内服・サプリ", items: ["コラーゲンペプチド", "飲む日焼け止め", "プラセンタ", "鉄分サプリ", "美容ドリンク"] },
             ].map((cat) => (
               <div key={cat.label}>
-                <h4 style={{ fontSize: "0.85rem", color: "#4a3f3f", marginBottom: "0.8rem", fontWeight: "600" }}>{cat.label}</h4>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                <h4 style={{ fontSize: "0.8rem", color: "#64748b", marginBottom: "0.6rem", borderLeft: "3px solid var(--primary)", paddingLeft: "0.5rem" }}>{cat.label}</h4>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
                   {cat.items.map((p) => (
                     <button
                       key={p}
@@ -176,17 +181,17 @@ export default function Home() {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       style={{
-                        padding: "0.4rem 1rem",
-                        borderRadius: "100px",
-                        border: "1px solid #eee",
+                        padding: "0.3rem 0.7rem",
+                        borderRadius: "8px",
+                        border: "1px solid #e2e8f0",
                         background: "#fff",
-                        fontSize: "0.8rem",
-                        color: "#8c7e7e",
+                        fontSize: "0.75rem",
+                        color: "#475569",
                         cursor: "pointer",
                         transition: "all 0.2s"
                       }}
-                      onMouseOver={(e) => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.color = "var(--primary)"; }}
-                      onMouseOut={(e) => { e.currentTarget.style.borderColor = "#eee"; e.currentTarget.style.color = "#8c7e7e"; }}
+                      onMouseOver={(e) => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.background = "#f0f9ff"; }}
+                      onMouseOut={(e) => { e.currentTarget.style.borderColor = "#e2e8f0"; e.currentTarget.style.background = "#fff"; }}
                     >
                       {p}
                     </button>
@@ -197,7 +202,7 @@ export default function Home() {
           </div>
         </div>
 
-        {error && <div className="error-message" style={{ color: "var(--danger)", padding: "1rem", textAlign: "center", background: "var(--danger-bg)", borderRadius: "16px", marginBottom: "2rem" }}>{error}</div>}
+        {error && <div className="error-message">{error}</div>}
 
         {result && (
           <div className="result-container animate-fade-in">
@@ -206,7 +211,7 @@ export default function Home() {
               <div className="risk-left">
                 <RiskIcon level={result.riskLevel} />
                 <div className="risk-text-box">
-                  <span className="risk-mini-label">ステマリスク判定</span>
+                  <span className="risk-mini-label">総合ステマ危険度 判定</span>
                   <div className="risk-main-title">{result.riskLevel}</div>
                 </div>
               </div>
@@ -219,7 +224,7 @@ export default function Home() {
             {/* AIの結論カード */}
             <div className="verdict-card-rich">
               <div className="verdict-header">
-                <Sparkles size={22} className="sparkle-icon" strokeWidth={1.5} />
+                <Sparkles size={22} className="sparkle-icon" />
                 <h2>AIのズバリ判定</h2>
               </div>
               <div className="verdict-main">「{result.verdict}」</div>
@@ -227,28 +232,37 @@ export default function Home() {
             </div>
 
             {/* 数値スコアグリッド */}
-            <h3 style={{ fontSize: "1.1rem", fontWeight: "600", color: "#3d3030", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.6rem" }}>
-              <Info size={18} strokeWidth={1.5} /> 詳細解析スコア
-            </h3>
+            <h3 className="section-title-sub"><Activity size={18} /> 解析パラメータ詳細</h3>
             
+            {/* 数値の意味についての解説 */}
+            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "1rem", marginBottom: "1.2rem", fontSize: "0.85rem", color: "#64748b" }}>
+              <p style={{ fontWeight: "bold", marginBottom: "0.4rem", color: "#475569" }}>📊 数値の読み方（100点満点）</p>
+              <ul style={{ listStyle: "none", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.4rem 1rem" }}>
+                <li>• <strong>ステマリスク</strong>: 高いほど宣伝色が強く要注意</li>
+                <li>• <strong>効果の信頼性</strong>: 高いほど体験者の満足度が高い</li>
+                <li>• <strong>コスパ納得感</strong>: 高いほど価格への納得感が強い</li>
+                <li>• <strong>使い心地・香り</strong>: 高いほど質感や使用感が好評</li>
+                <li>• <strong>肌への優しさ</strong>: 高いほど刺激等の懸念が少ない</li>
+              </ul>
+            </div>
             <div className="score-grid-rich">
-              <ScoreCard label="ステマ・PR色" detail={result.scores.stemaRisk} type="negative" icon={ShieldAlert} />
-              <ScoreCard label="仕上がり・効果満足度" detail={result.scores.effectiveness} type="positive" icon={Sparkles} />
+              <ScoreCard label="ステマ・宣伝リスク" detail={result.scores.stemaRisk} type="negative" icon={ShieldAlert} />
+              <ScoreCard label="仕上がり・信頼性" detail={result.scores.effectiveness} type="positive" icon={ThumbsUp} />
               <ScoreCard label="コスパ・納得感" detail={result.scores.costPerformance} type="positive" icon={DollarSign} />
-              <ScoreCard label="肌への優しさ・低刺激" detail={result.scores.skinFriendliness} type="positive" icon={Droplets} />
-              <ScoreCard label="使い心地・香り" detail={result.scores.usability} type="positive" icon={Wind} />
+              <ScoreCard label="使い心地・香り" detail={result.scores.usability} type="positive" icon={HeartPulse} />
+              <ScoreCard label="肌への優しさ" detail={result.scores.skinFriendliness} type="positive" icon={Activity} />
             </div>
 
             {/* メリット・デメリット */}
             <div className="details-grid-rich">
               <div className="details-column">
-                <h3 className="pros-title"><ThumbsUp size={20} strokeWidth={1.5} /> リアルな高評価</h3>
+                <h3 className="pros-title"><ThumbsUp size={20} /> リアルなメリット</h3>
                 <ul className="details-list">
                   {result.prosSummary.map((item, i) => <li key={i}><span className="plus">+</span>{item}</li>)}
                 </ul>
               </div>
               <div className="details-column">
-                <h3 className="cons-title"><ThumbsDown size={20} strokeWidth={1.5} /> リアルな懸念点</h3>
+                <h3 className="cons-title"><ThumbsDown size={20} /> リアルなデメリット</h3>
                 <ul className="details-list">
                   {result.consSummary.map((item, i) => <li key={i}><span className="minus">-</span>{item}</li>)}
                 </ul>
@@ -258,28 +272,28 @@ export default function Home() {
             {/* 注意点セクション */}
             {result.warningPoints && result.warningPoints.length > 0 && (
               <div className="warning-card-rich">
-                <h3><AlertTriangle size={20} strokeWidth={1.5} /> 購入前に知っておくべき注意点</h3>
+                <h3><AlertTriangle size={20} /> 購入前の具体的注意点</h3>
                 <ul className="warning-list-rich">
                   {result.warningPoints.map((p, i) => <li key={i}>{p}</li>)}
                 </ul>
               </div>
             )}
 
-            {/* 薬機法・成分セクション */}
+            {/* 薬機法・定期縛り */}
             <div className="info-grid-rich">
               {result.yakukiho && (
                 <div className="info-box yakukiho-box">
-                  <h4><ShieldAlert size={18} strokeWidth={1.5} /> 広告表現の信憑性</h4>
+                  <h4><ShieldAlert size={18} /> 広告表現の信憑性</h4>
                   <div className="violation-tags">
                     {result.yakukiho.violationWords.map((w, idx) => <span key={idx} className="tag">{w}</span>)}
-                    {result.yakukiho.violationWords.length === 0 && <span style={{ color: "var(--safe)", fontSize: "0.8rem" }}>慎重な表現がされています</span>}
+                    {result.yakukiho.violationWords.length === 0 && <span className="tag-safe">問題なし</span>}
                   </div>
-                  <p>{result.yakukiho.advice}</p>
+                  <p className="advice">{result.yakukiho.advice}</p>
                 </div>
               )}
               {result.subscriptionRisk && (
-                <div className="info-box">
-                  <h4><ShoppingCart size={18} strokeWidth={1.5} /> 定期購入のリスク</h4>
+                <div className={`info-box ${result.subscriptionRisk.hasSubscription ? 'sub-danger' : 'sub-safe'}`}>
+                  <h4><ShoppingCart size={18} /> 定期購入のリスク</h4>
                   <p>{result.subscriptionRisk.detail}</p>
                 </div>
               )}
@@ -288,7 +302,7 @@ export default function Home() {
             {/* 成分チェック */}
             {result.ingredients && result.ingredients.length > 0 && (
               <div className="ingredients-card-rich">
-                <h3><Droplets size={18} strokeWidth={1.5} /> 注目の成分解析</h3>
+                <h3><Sparkles size={18} /> 主要成分の解析</h3>
                 {result.ingredients.map((ing, i) => (
                   <div key={i} className="ingredient-item">
                     <span className={`evidence-badge e-${ing.evidence}`}>
@@ -305,23 +319,20 @@ export default function Home() {
 
             {/* SNSシェア */}
             <div className="share-section-rich">
-              <p>この結果をシェアして友達の美容もサポートする</p>
+              <p>この判定結果をSNSで共有する</p>
               <div className="share-btns">
-                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`【AI解析】「${result.productName}」の本音判定が出ました✨\n\n🛡️ ステマリスク: ${result.scores.stemaRisk.value}%\n💎 結論：${result.verdict}\n\n詳細はこちら👇\n#TrueBeautyReviewer #美容垢さんと繋がりたい\n`)}&url=${encodeURIComponent(`https://true-beauty-reviewer.vercel.app/?q=${result.productName}`)}`} target="_blank" className="btn-x">𝕏 でポスト</a>
-                <a href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(`https://true-beauty-reviewer.vercel.app/?q=${result.productName}`)}`} target="_blank" className="btn-line">LINEで送る</a>
+                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`【AI判定】「${result.productName}」の結果は…😱\n\n🛡️ ステマリスク: ${result.scores.stemaRisk.value}%\n📊 結論：${result.verdict}\n\n詳細をチェック👇\n#TrueBeautyReviewer #美容\n`)}&url=${encodeURIComponent(`https://true-beauty-reviewer.vercel.app/?q=${result.productName}`)}`} target="_blank" className="btn-x">𝕏 でポストして共有</a>
+                <a href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(`https://true-beauty-reviewer.vercel.app/?q=${result.productName}`)}`} target="_blank" className="btn-line">LINEで友達に教える</a>
               </div>
             </div>
 
             {/* マネタイズ */}
-            <div className="monetization-rich" style={{ borderTop: "1px dashed var(--border)", paddingTop: "4rem", marginTop: "4rem" }}>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: "600", color: "#3d3030", marginBottom: "2rem", textAlign: "center" }}>📦 解析した商品のショッピング情報</h3>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
-                <a href={`https://hb.afl.rakuten.co.jp/ichiba/52f1f988.9bcb825b.52f1f989.d0a8b332/?pc=${encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${result.productName}/`)}&link_type=text`} target="_blank" style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "1.5rem", borderRadius: "24px", background: "#bf0000", color: "#fff", textDecoration: "none", fontWeight: "600", transition: "0.2s" }}>
-                  <ShoppingCart size={20} /> 楽天市場で最安値をチェック
-                </a>
-                <a href={`https://www.amazon.co.jp/s?k=${encodeURIComponent(result.productName)}&tag=s19801111-22`} target="_blank" style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "1.5rem", borderRadius: "24px", background: "#ff9900", color: "#fff", textDecoration: "none", fontWeight: "600", transition: "0.2s" }}>
-                  <ShoppingCart size={20} /> Amazonでレビューを確認
-                </a>
+            <div className="monetization-rich">
+              <div className="ad-banner">スポンサーリンク</div>
+              <h3 className="section-title-sub">📦 解析した商品はこちら</h3>
+              <div className="shop-links-rich">
+                <a href={`https://hb.afl.rakuten.co.jp/ichiba/52f1f988.9bcb825b.52f1f989.d0a8b332/?pc=${encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${result.productName}/`)}&link_type=text`} target="_blank" className="rakuten"><ShoppingCart size={18} /> 楽天市場で購入・比較</a>
+                <a href={`https://www.amazon.co.jp/s?k=${encodeURIComponent(result.productName)}&tag=s19801111-22`} target="_blank" className="amazon"><ShoppingCart size={18} /> Amazonで価格をチェック</a>
               </div>
             </div>
           </div>
@@ -329,21 +340,22 @@ export default function Home() {
       </div>
 
       {/* 豆知識コラム */}
-      <div style={{ marginTop: "5rem" }}>
-        <h3 style={{ fontSize: "1.6rem", fontWeight: "300", color: "#3d3030", textAlign: "center", marginBottom: "4rem", letterSpacing: "0.1em" }}>
-          Beauty Column
+      <div className="column-section-rich">
+        <h3 style={{ fontSize: "1.4rem", fontWeight: "900", color: "#0f172a", marginBottom: "2rem", textAlign: "center" }}>
+          📖 AIが教える、失敗しない美容品の選び方
         </h3>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
-          <div style={{ background: "#fff", padding: "2.5rem", borderRadius: "32px", border: "1px solid var(--border)" }}>
-            <h4 style={{ color: "var(--primary)", fontWeight: "600", marginBottom: "1rem" }}>1. 「有名人愛用」の魔法を解く</h4>
-            <p style={{ fontSize: "0.9rem", color: "#7d6565", lineHeight: "2" }}>
-              SNSで見かける「モデルさんの愛用品」。実は高額な契約によるプロモーションであることも少なくありません。当AIは、そんな虚像を剥ぎ取り、実際に一般ユーザーが自腹で買ってどう感じたかを冷静に分析します。
+        
+        <div className="column-grid-rich">
+          <div className="column-item">
+            <h4>1. 「魔法の言葉」に惑わされない</h4>
+            <p>
+              「1回で劇的変化」「誰でも美肌に」といった極端な表現には注意が必要です。化粧品はあくまで日々の積み重ねをサポートするものであり、即効性には限界があります。AIの解析では、こうした過度な表現をチェックしています。
             </p>
           </div>
-          <div style={{ background: "#fff", padding: "2.5rem", borderRadius: "32px", border: "1px solid var(--border)" }}>
-            <h4 style={{ color: "var(--primary)", fontWeight: "600", marginBottom: "1rem" }}>2. 自分の肌質を知る重要性</h4>
-            <p style={{ fontSize: "0.9rem", color: "#7d6565", lineHeight: "2" }}>
-              どんなに評価が高い美容液も、あなたの肌質（乾燥・脂性・混合など）に合わなければ意味がありません。解析結果では、どのような層の人々が満足しているのかを重点的に抽出しています。
+          <div className="column-item">
+            <h4>2. 自分の肌質を知る重要性</h4>
+            <p>
+              どんなに評価が高い商品も、自分の肌質（乾燥・敏感・混合など）に合わなければ意味がありません。解析結果では、どのような層の人々が満足しているのかを重点的に抽出しています。
             </p>
           </div>
         </div>
@@ -351,10 +363,10 @@ export default function Home() {
 
       <footer className="footer-rich">
         <div className="footer-links">
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
+          <a href="/privacy">プライバシーポリシー</a>
+          <a href="/terms">利用規約</a>
         </div>
-        <p className="menseki">【免責事項】当サイトの分析はAIによる自動集計であり、特定の個人の感想に基づくものです。仕上がりや効果を保証するものではありません。購入判断は自己責任でお願いいたします。</p>
+        <p className="menseki">【免責事項】当サイトの分析はAIによる自動集計であり、正確性や効果を保証するものではありません。購入判断は自己責任でお願いいたします。</p>
         <p className="copyright">© 2026 True Beauty Reviewer</p>
       </footer>
     </main>
